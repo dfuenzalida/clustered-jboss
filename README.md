@@ -1,6 +1,12 @@
 # Clustered JBoss Quickstart
 
-To complete this quickstart you will need an active Azure Subscription and the Azure CLI. If you do not have the Azure CLI installed locally, you can use the [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/quickstart) in your web browser.
+To complete this quickstart you will need an active Azure Subscription and the following tools installed on your machine: 
+
+- Azure CLI
+- Java 11
+- Maven
+
+If you do not have those tools installed locally, you can use the [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/quickstart) in your web browser.
 
 1. Clone this repository
 
@@ -22,20 +28,22 @@ To complete this quickstart you will need an active Azure Subscription and the A
         --parameters jboss_app_name=${WEBAPP_NAME}
     ```
 
-3. Build the app
+    The App Service Plan is configured to have 3 JBoss EAP instances which will form the cluster.
+
+3. Build the app with Maven.
 
     ```bash
     mvn clean package
     ```
 
-4. Deploy the app
+4. Deploy the app using the Azure CLI.
 
     ```bash
-    az webapp deploy -n $WEBAPP_NAME -g $RESOURCE_GROUP --src 
+    az webapp deploy -n $WEBAPP_NAME -g $RESOURCE_GROUP --src-path target/session-replication.war --type war
     ```
 
-5. Browse to the app. Explain to use the counter and come back to see the new information.
+5. After a moment the web app will restart and initialize JBoss with the new application. Browse to the app at `http://<your-site-name>.azurewebsites.net/session-replication/testHA.jsp`.
 
+   The web page will display your session ID, the JBoss instance ID, and a simple counter. Increment the counter and refresh the web page. You should see a new JBoss EAP instance ID, but the counter will display the same session and counter information. This means that the stateful session information was shared between the first and second EAP instances, and even though you were routed to a different instance the session information was persisted across instances.
 
-More advanced app:
-https://github.com/Azure/rhel-jboss-templates/tree/master/eap-session-replication
+   ToDo: add pictures here of the pages (before & after)
