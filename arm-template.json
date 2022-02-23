@@ -4,24 +4,23 @@
     "parameters": {
         "jboss_app_name": {
             "type": "String"
-        },
-        "location": {
-            "type": "String",
-            "defaultValue": "East US 2"
         }
     },
     "variables": {
         "vnetName": "cluster-vnet",
+        "subnetName": "cluster-subnet",
         "planName": "jboss-plan",
         "virtualNetwork": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Network/virtualNetworks', variables('vnetName'))]",
-        "appServicePlan": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Web/serverfarms', variables('planName'))]"
+        "subnetId": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetName'))]",
+        "appServicePlan": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.Web/serverfarms', variables('planName'))]",
+        "location": "[resourceGroup().location]"
     },
     "resources": [
         {
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2020-11-01",
             "name": "[variables('vnetName')]",
-            "location": "[parameters('location')]",
+            "location": "[variables('location')]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
@@ -51,31 +50,10 @@
             }
         },
         {
-            "type": "Microsoft.Network/virtualNetworks/subnets",
-            "apiVersion": "2020-11-01",
-            "name": "[concat(variables('virtualNetwork'), '/default')]",
-            "dependsOn": [
-                "[variables('virtualNetwork')]"
-            ],
-            "properties": {
-                "addressPrefix": "10.0.0.0/24",
-                "delegations": [
-                    {
-                        "name": "delegation",
-                        "properties": {
-                            "serviceName": "Microsoft.Web/serverfarms"
-                        }
-                    }
-                ],
-                "privateEndpointNetworkPolicies": "Enabled",
-                "privateLinkServiceNetworkPolicies": "Enabled"
-            }
-        },
-        {
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2021-03-01",
             "name": "[variables('planName')]",
-            "location": "[parameters('location')]",
+            "location": "[variables('location')]",
             "sku": {
                 "name": "P1v3",
                 "tier": "PremiumV3",
@@ -101,8 +79,11 @@
             "type": "Microsoft.Web/sites",
             "apiVersion": "2021-03-01",
             "name": "[parameters('jboss_app_name')]",
-            "location": "[parameters('location')]",
+            "location": "[variables('location')]",
             "kind": "app,linux",
+            "dependsOn": [
+                "[variables('appServicePlan')]"
+            ],
             "properties": {
                 "enabled": true,
                 "hostNameSslStates": [
@@ -149,7 +130,7 @@
             "type": "Microsoft.Web/sites/config",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('jboss_app_name'), '/web')]",
-            "location": "[parameters('location')]",
+            "location": "[variables('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('jboss_app_name'))]"
             ],
@@ -231,7 +212,7 @@
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('jboss_app_name'), '/', parameters('jboss_app_name'), '.azurewebsites.net')]",
-            "location": "[parameters('location')]",
+            "location": "[variables('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('jboss_app_name'))]"
             ],
@@ -244,7 +225,7 @@
             "type": "Microsoft.Web/sites/virtualNetworkConnections",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('jboss_app_name'), '/d38d8692-db38-42f7-80db-df221033cba0_default')]",
-            "location": "[parameters('location')]",
+            "location": "[variables('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('jboss_app_name'))]"
             ],
