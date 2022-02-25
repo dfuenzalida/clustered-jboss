@@ -42,7 +42,7 @@ If you do not have those tools installed locally, you can use the [Azure Cloud S
     az webapp deploy -n $WEBAPP_NAME -g $RESOURCE_GROUP --src-path target/session-replication.war --type war
     ```
 
-5. After a moment the web app will restart and initialize JBoss with the new application. Browse to the app at `http://<your-site-name>.azurewebsites.net`.
+5. After a moment the web app will restart and initialize JBoss with the new application. Browse to the app at `http://<your-site-name>.azurewebsites.net/testHA.jsp`.
 
    The web page will display your session ID, the JBoss instance ID, and a simple counter. Increment the counter and refresh the web page. You should see a new JBoss EAP instance ID, but the counter will display the same session and counter information. This means that the stateful session information was shared between the first and second EAP instances, and even though you were routed to a different instance the session information was persisted across instances.
 
