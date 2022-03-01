@@ -36,7 +36,7 @@ If you do not have those tools installed locally, you can use the [Azure Cloud S
     $env:WEBAPP_NAME=''
     $env:LOCATION='westus'
     $env:RESOURCE_GROUP='jboss-rg'
-    az group create --name $env:WEBAPP_NAME --location $env:LOCATION
+    az group create --name $env:RESOURCE_GROUP --location $env:LOCATION
     az deployment group create `
         --name jboss_deployment `
         --resource-group $env:RESOURCE_GROUP `
