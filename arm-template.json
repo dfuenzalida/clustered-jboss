@@ -176,7 +176,7 @@
                 "autoHealEnabled": false,
                 "vnetName": "d38d8692-db38-42f7-80db-df221033cba0_default",
                 "vnetRouteAllEnabled": true,
-                "vnetPrivatePortsCount": 0,
+                "vnetPrivatePortsCount": 2,
                 "localMySqlEnabled": false,
                 "ipSecurityRestrictions": [
                     {
