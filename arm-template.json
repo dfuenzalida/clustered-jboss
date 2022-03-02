@@ -104,7 +104,7 @@
                 "hyperV": false,
                 "siteConfig": {
                     "numberOfWorkers": 1,
-                    "linuxFxVersion": "JBOSSEAP|7-java11",
+                    "linuxFxVersion": "JBOSSEAP|7.4.1-java11",
                     "acrUseManagedIdentityCreds": false,
                     "alwaysOn": true,
                     "http20Enabled": false,
@@ -148,7 +148,7 @@
                     "hostingstart.html"
                 ],
                 "netFrameworkVersion": "v4.0",
-                "linuxFxVersion": "JBOSSEAP|7-java11",
+                "linuxFxVersion": "JBOSSEAP|7.4.1-java11",
                 "requestTracingEnabled": false,
                 "remoteDebuggingEnabled": false,
                 "remoteDebuggingVersion": "VS2019",
