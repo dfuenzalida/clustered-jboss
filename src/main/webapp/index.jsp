@@ -12,10 +12,7 @@
 <body>
 
     <%
-        File hostnameFile = new File("/etc/hostname");
-        BufferedReader br = new BufferedReader(new FileReader(hostnameFile));
-        String hostname = br.readLine();
-
+        String hostname = System.getenv("HOSTNAME");
         String hostIP = System.getenv("WEBSITE_PRIVATE_IP");
     
         // get counter
@@ -92,6 +89,11 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td>JBoss version</td>
+                            <td>Full version of JBoss EAP serving this app</td>
+                            <td><%= System.getenv("JBOSS_EAP_VERSION") %></td>
+                        </tr>
                         <tr>
                             <td>Session Counter</td>
                             <td>Counter's value for this HTTP session</td>
