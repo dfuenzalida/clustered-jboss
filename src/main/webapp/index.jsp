@@ -16,7 +16,7 @@
         BufferedReader br = new BufferedReader(new FileReader(hostnameFile));
         String hostname = br.readLine();
 
-        String hostIP = inetAdd.getHostAddress();
+        String hostIP = System.getenv("WEBSITE_PRIVATE_IP");
     
         // get counter
         Integer counter = (Integer) session.getAttribute("demo.counter");
